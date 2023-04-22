@@ -6,7 +6,7 @@ from src.logger import logging #Custom logging module
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from dataclasses import dataclass #Dataclass module for creating configuration classes
-
+from src.components.data_transformation import DataTransformation, DataTransformationConfig
 
 # Dataclass for data ingestion configuration
 @dataclass
@@ -16,7 +16,7 @@ class DataIngestionConfig:
     raw_data_path: str = os.path.join('artefacts','data.csv') #Raw data file path
 
 # Class for data ingestion
-class dataingestion:
+class DataIngestion:
     def __init__(self):
         self.ingestion_config = DataIngestionConfig()  #Data ingestion configuration
 
@@ -49,5 +49,9 @@ class dataingestion:
             raise CustomException(e,sys)
 
 if __name__=='__main__':
-    obj = dataingestion()
-    obj.initiate_data_ingestion()
+    obj = DataIngestion()
+    train_data, test_data=obj.initiate_data_ingestion()
+
+
+    data_transformation = DataTransformation()
+    data_transformation.initiate_data_transformation(train_data, test_data)
